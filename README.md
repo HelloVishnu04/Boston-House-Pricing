@@ -1,2 +1,10 @@
-# Boston-House-Pricing
-i this Project I Have to make a Ml prediction model for pridicting the house price using the Bostonhouseprice dataset
+### Boston-House-Pricing
+
+### Software and Tools Requirements
+
+1. [Github Account](https://github.com)
+2. [Heroku Account](https://heroku.com)
+3. [VS Code IDE](https://code.visualdtudio.com/)
+4. [GitCLI](https://git-scm.com/book/en/v2/Getting-Started-The-Command_line)
+
+
