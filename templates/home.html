@@ -1,61 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ML API</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Prediction Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
+<body class="bg-slate-50 min-h-screen py-10 px-4">
 
-<body>
-    <h1>Boston House Pricing Prediction</h1>
-    <div>
-        <form action="{{url_for('predict')}}" method="post">
-        <label for="crim">CRIM:</label>
-        <input type="text" id="crim" name="crim" placeholder="CRIM" required = "required"><br><br>
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-slate-800 mb-2">Housing Price Prediction</h1>
+            <p class="text-slate-500">Enter the housing metrics below to calculate the Predicted Median Value (MEDV).</p>
+        </div>
 
-        <label for="zn">ZN:</label>
-        <input type="text" id="zn" name="zn" placeholder="ZN" required = "required"><br><br>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-slate-100">
+                <form id="predictionForm" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">CRIM (Crime Rate)</label>
+                        <input type="number" step="any" name="crim" required placeholder="0.00632"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="indus">INDUS:</label>
-        <input type="text" id="indus" name="indus" placeholder="INDUS" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">ZN (Residential Land)</label>
+                        <input type="number" step="any" name="zn" required placeholder="18.0"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="chas">CHAS:</label>
-        <input type="text" id="chas" name="chas" placeholder="CHAS" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">INDUS (Non-Retail Business)</label>
+                        <input type="number" step="any" name="indus" required placeholder="2.31"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="nox">NOX:</label>
-        <input type="text" id="nox" name="nox" placeholder="NOX" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">CHAS (Charles River)</label>
+                        <select name="chas" class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
+                            <option value="0">0 (Not bounding river)</option>
+                            <option value="1">1 (Bounds river)</option>
+                        </select>
+                    </div>
 
-        <label for="rm">RM:</label>
-        <input type="text" id="rm" name="rm" placeholder="RM" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">NOX (Nitric Oxides)</label>
+                        <input type="number" step="any" name="nox" required placeholder="0.538"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="age">AGE:</label>
-        <input type="text" id="age" name="age" placeholder="AGE" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">RM (Avg Rooms)</label>
+                        <input type="number" step="any" name="rm" required placeholder="6.575"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="dis">DIS:</label>
-        <input type="text" id="dis" name="dis" placeholder="DIS" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">AGE (Built prior 1940)</label>
+                        <input type="number" step="any" name="age" required placeholder="65.2"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="rad">RAD:</label>
-        <input type="text" id="rad" name="rad" placeholder="RAD" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">DIS (Distance to Employment)</label>
+                        <input type="number" step="any" name="dis" required placeholder="4.0900"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="tax">TAX:</label>
-        <input type="text" id="tax" name="tax" placeholder="TAX" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">RAD (Highway Access)</label>
+                        <input type="number" step="any" name="rad" required placeholder="1"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="ptratio">PTRATIO:</label>
-        <input type="text" id="ptratio" name="ptratio" placeholder="PTRATIO" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">TAX (Property Tax Rate)</label>
+                        <input type="number" step="any" name="tax" required placeholder="296.0"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="b">B:</label>
-        <input type="text" id="b" name="b" placeholder="B" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">PTRATIO (Pupil-Teacher Ratio)</label>
+                        <input type="number" step="any" name="ptratio" required placeholder="15.3"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <label for="lstat">LSTAT:</label>
-        <input type="text" id="lstat" name="lstat" placeholder="LSTAT" required = "required"><br><br>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">B (Black proportion)</label>
+                        <input type="number" step="any" name="b" required placeholder="396.90"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
 
-        <button type="submit" value="Predict Price">Predict</button>
-        </form>
-        <br>
-        <br>
-        
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">LSTAT (% Lower Status)</label>
+                        <input type="number" step="any" name="lstat" required placeholder="4.98"
+                            class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
+                    </div>
+
+                    <div class="md:col-span-2 mt-4">
+                        <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 flex justify-center items-center gap-2">
+                            <span>Predict Price</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="lg:col-span-1">
+                <div class="bg-slate-800 text-white p-6 rounded-xl shadow-lg sticky top-10">
+                    <h2 class="text-xl font-bold mb-4 border-b border-slate-600 pb-2">Prediction Result</h2>
+                    
+                    <div id="resultContainer" class="hidden">
+                        <p class="text-slate-400 text-sm mb-1">Estimated MEDV:</p>
+                        <div class="text-4xl font-mono text-green-400 font-bold mb-2">
+                            $<span id="predictionValue">0.00</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-4">Calculated based on model inference.</p>
+                    </div>
+
+                    <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-10">
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white mb-3"></div>
+                        <p class="text-sm text-slate-300">Processing...</p>
+                    </div>
+
+                    <div id="placeholderText" class="py-10 text-center text-slate-500">
+                        <p>Fill out the form and hit predict to see results here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    {{prediction_text}}
+    <script>
+        const form = document.getElementById('predictionForm');
+        const resultContainer = document.getElementById('resultContainer');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const placeholderText = document.getElementById('placeholderText');
+        const predictionValue = document.getElementById('predictionValue');
+
+        // REPLACE THIS URL WITH YOUR ACTUAL POSTMAN API URL
+        const API_URL = "http://localhost:5000/predict_api"; 
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // 1. UI State: Loading
+            placeholderText.classList.add('hidden');
+            resultContainer.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+
+            // 2. Collect Data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Convert strings to numbers (important for ML models)
+            for (let key in data) {
+                data[key] = parseFloat(data[key]);
+            }
+
+            try {
+                // 3. Send to API (Mimic Postman)
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data) 
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                const result = await response.json();
+
+                // 4. Update UI with Result
+                // Assuming your API returns JSON like: { "prediction": [24.5] } or { "medv": 24.5 }
+                // Adjust 'result.prediction' based on your actual API response structure
+                const finalValue = result.prediction || result.medv || "N/A"; 
+                
+                predictionValue.innerText = finalValue;
+                
+                loadingSpinner.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error:', error);
+                loadingSpinner.classList.add('hidden');
+                placeholderText.innerText = "Error fetching prediction. Check console.";
+                placeholderText.classList.remove('hidden');
+                alert("Failed to connect to the API. Is CORS enabled?");
+            }
+        });
+    </script>
 </body>
 </html>
