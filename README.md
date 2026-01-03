@@ -8,3 +8,8 @@
 4. [GitCLI](https://git-scm.com/book/en/v2/Getting-Started-The-Command_line)
 
 
+Create a new enviornment
+
+```
+conda create --name ./.conda python=3.12.4
+```
